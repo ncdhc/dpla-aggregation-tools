@@ -14,8 +14,9 @@
         <div id="formwrap">
             <form method="get" action="">
                 <?php if ((isset($_GET['base'])) && ($_GET['base'] !== '')) { ?>
-                    <input id="base" name="base" type="text" value="<?php echo $_GET['base']; ?>"/>
-
+                   
+                    <input disabled type="text" value="<?php echo $_GET['base']; ?>"/>
+                    <input type="hidden" id="base" name="base" value="<?php echo $_GET['base'];?>"/>
                     <?php
                     $seturl = $_GET['base'] . "?verb=ListSets";
 
@@ -145,5 +146,22 @@
         }
             ?>
 
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var vars = [], hash;
+                var q = document.URL.split('?')[1];
+                if(q !== undefined){
+                    q = q.split('&');
+                    for(var i = 0; i < q.length; i++){
+                        hash = q[i].split('=');
+                        vars.push(hash[1]);
+                        vars[hash[0]] = hash[1];
+                    }
+                }
+               var setreplace = vars['set'].replace(/\+/g,'%20');
+               var setvalue = decodeURIComponent(setreplace);
+               $('#setname option[value="'+setvalue+'"]').attr("selected","selected");
+            });
+        </script>
 </body>
 </html>
