@@ -1,0 +1,92 @@
+body {
+    font-family: 'calibri','trebuchet ms',serif;
+    margin: 20px;
+    background-color: #DDEAED;
+}
+
+a {
+    text-decoration: none;
+    color: #13525E;
+}
+
+a:hover {
+    color: #4A8894;
+}
+
+
+
+#result {
+    width: 3500px;
+    overflow-x: scroll;
+}
+
+table {
+    table-layout: fixed;
+    clear: both;
+    border-collapse: collapse;
+    background-color: #f5f5f5;
+}
+
+table td, table th {
+    vertical-align: top;
+    text-align: left;
+    padding:10px 15px;
+    width: 200px;
+    border: 1px solid #666;
+}
+
+table th.required {
+    background-color: #FFFF00;
+}
+
+table th.recommended {
+    background-color: #FFFFBA;
+}
+
+.value {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #fff;
+}
+
+input[type=text] {
+    width: 400px;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #666;
+} 
+
+select {
+    width: 150px;
+     padding: 7px;
+    border-radius: 3px;
+    border: 1px solid #666;
+}
+
+input[type=submit], input[type=button] {
+    width: 120px;
+    padding: 6px;
+} 
+
+.clearbutton {
+    font-size: 30px;
+    line-height: 15px;
+    display: inline-block;
+    width: 15px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+#formwrap, .feedwrap {
+    border-radius: 3px;
+    background-color: #ADD8E0;
+    padding: 20px;
+    float: left;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+form {
+    margin-bottom: 0;
+}
