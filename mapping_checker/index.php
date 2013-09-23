@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>NCDHC OAI Feed Checker Tool</title>
+        <title>OAI Aggregation Tools &raquo; DC Mapping Checker</title>
         <link rel="stylesheet" type="text/css" href="style.css"/>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     </head>
@@ -10,7 +10,8 @@
         <div class="sectionwrap">
             <a href="../">&laquo; Home</a>
         </div>
-        <h1>NCDHC OAI Feed Checker Tool</h1>
+        <h1>DC Mapping Checker Tool</h1>
+        <p>Check incoming oai_dc feeds for correct Dublin Core mappings.</p>
         <div id="formwrap">
             <form method="get" action="">
                 <?php if ((isset($_GET['base'])) && ($_GET['base'] !== '')) { ?>
@@ -59,7 +60,7 @@
 
 
                 <?php } else { ?>
-                    <input id="base" name="base" type="text"/>
+                    <input id="base" name="base" type="text" placeholder="OAI Base URL"/>
                     <input type="submit" value="Get Sets"/>
                 <?php } ?>
 
