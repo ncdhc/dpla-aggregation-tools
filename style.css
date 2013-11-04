@@ -1,0 +1,58 @@
+
+
+body { 
+    background-color: #ececec;
+    margin: 0 20px;
+    font-family: calibri, 'trebuchet ms', sans-serif;
+}
+
+#container {
+    width: 800px;
+    border-radius: 4px;
+    margin: 20px auto;
+    text-align: center;
+    background-color: #ccc;
+    padding: 20px;
+}
+
+#container ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#container ul li {
+    margin: 0 0 10px 0;
+}
+
+h2 {
+    margin: 0;
+}
+
+a {
+    display: block;
+    width: 100%;
+    padding: 15px 0;
+    background-color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #000;
+}
+
+
+.comingsoon p, a p {
+    color: #999;
+    margin: 0;
+    padding-top: 5px;
+}
+
+a:hover {
+    background-color: #FCF1B3;
+}
+
+.comingsoon {
+    padding: 15px 0;
+    background-color: #ececec;
+    border-radius: 4px;
+    color: #999;
+}
