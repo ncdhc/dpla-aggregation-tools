@@ -10,7 +10,7 @@
         <div class="sectionwrap">
             <a href="../">&laquo; Home</a>
         </div>
-        <h1>DC Mapping Checker Tool</h1>
+        <h1>DC Mapping Checker</h1>
         <p>Check incoming oai_dc feeds for correct Dublin Core mappings.</p>
         <div id="formwrap">
             <form method="get" action="">
@@ -18,42 +18,77 @@
                    
                     <input disabled type="text" value="<?php echo $_GET['base']; ?>"/>
                     <input type="hidden" id="base" name="base" value="<?php echo $_GET['base'];?>"/>
-                    <?php
-                    $seturl = $_GET['base'] . "?verb=ListSets";
+          <?php
+                    
+                    function getSets($rt) {
+                        if($rt!==''){
+                        $seturl = $_GET['base'] . "?verb=ListSets&resumptionToken=" . $rt;
+                        } else {
+                        $seturl = $_GET['base'] . "?verb=ListSets";
+                        }
+                        echo "<br/>SETURL: $seturl<br/>";
+                        // create curl resource
+                        $ch = curl_init();
 
-                    // create curl resource
-                    $ch = curl_init();
+                        // set url
+                        curl_setopt($ch, CURLOPT_URL, $seturl);
 
-                    // set url
-                    curl_setopt($ch, CURLOPT_URL, $seturl);
+                        //return the transfer as a string
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-                    //return the transfer as a string
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        // $output contains the output string
+                        $output = curl_exec($ch);
 
-                    // $output contains the output string
-                    $output = curl_exec($ch);
+                        $output = str_replace("oai:", "", $output);
 
-                    // close curl resource to free up system resources
-                    curl_close($ch);
+                        // close curl resource to free up system resources
+                        curl_close($ch);
 
-                    try {
-                        $setxml = new SimpleXMLElement($output);
-                    } catch (Exception $e) {
-                        
+                        try {
+                            $setxml = new SimpleXMLElement($output);
+                            return $setxml;
+                        } catch (Exception $e) {
+
+                        }
+                    }
+                   
+                    $setarray = array();
+                    
+                    function processSets($setxml) {
+                        global $setarray;
+                        $setcount = count($setxml->ListSets->set);
+                        for ($i = 0; $i < $setcount; $i++) {
+                            $setarray[] = $setxml->ListSets->set[$i]->setSpec . "|" . $setxml->ListSets->set[$i]->setName . "|" . ($i + 1);
+                        }
+    
+                      
+                        if(isset($setxml->ListSets->resumptionToken)){
+                            if($setxml->ListSets->resumptionToken==''){
+                                // do nothing
+                            } else {
+                            $nextpass = getSets($setxml->ListSets->resumptionToken);
+                            processSets($nextpass);
+                            }
+                        }
                     }
                     ?>
-
-                    <?php if (isset($setxml)) { ?>
-
+                   
                         <select id="setname" name="set">
                             <?php
-                            $setcount = count($setxml->ListSets->set);
-                            for ($i = 0; $i < $setcount; $i++) {
-                                echo "<option value='" . $setxml->ListSets->set[$i]->setSpec . "|" . $setxml->ListSets->set[$i]->setName . "'>" . $setxml->ListSets->set[$i]->setName . "</option>";
+                            
+                            $setxml = getSets('');
+
+                            processSets($setxml);
+                            
+                            print_r($setarray);
+                            sort($setarray);
+    
+                            foreach ($setarray as $setpair) {
+                                $setparts = explode("|",$setpair);
+                                echo "<option value='" . $setpair . "'>" . $setparts[0] ." &#x2014; ". $setparts[1] . "</option>";
                             }
                             ?>
                         </select>
-                    <?php } ?>
 
                     <input type="submit"/>
                     <a class="clearbutton" href=".">&times;</a>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>OAI Aggregation Tools &raquo; Required Data Checker</title>
+        <title>OAI Aggregation Tools &raquo; DC Facet Viewer</title>
         <link rel="stylesheet" type="text/css" href="style.css"/>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script> 
@@ -11,8 +11,8 @@
         <div class="sectionwrap">
             <a href="../">&laquo; Home</a>
         </div>
-        <h1>Required Data Checker</h1>
-        <p>Check incoming oai_dc or outgoing MODS for required data.</p>
+        <h1>DC Facet Viewer</h1>
+        <p>See the contents of Dublin Core fields in an OAI feed according to frequency.</p>
         <div class="formwrap">
             <form method="get" action="">
                 <?php if ((isset($_GET['base'])) && ($_GET['base'] !== '')) { ?>
@@ -81,7 +81,6 @@
 
                             processSets($setxml);
                             
-                            print_r($setarray);
                             sort($setarray);
     
                             foreach ($setarray as $setpair) {
@@ -91,12 +90,25 @@
                             ?>
                         </select>
               
-
-
-                    <div class="inputblock">
-                        <input type="radio" name="mp" value="oai_dc" checked>oai_dc<br/>
-                        <input type="radio" name="mp" value="MODS">MODS
-                    </div>
+                    <select id="fieldname" name="field">
+                        <option value="title">title</option>
+                        <option value="coverage">coverage</option>
+                        <option value="rights">rights</option>
+                        <option value="language">language</option>
+                        <option value="type">type</option>
+                        <option value="contributor">contributor</option>
+                        <option value="creator">creator</option>
+                        <option value="date">date</option>
+                        <option value="description">description</option>
+                        <option value="format">format</option>
+                        <option value="identifier">identifier</option>
+                        <option value="publisher">publisher</option>
+                        <option value="relation">relation</option>
+                         <option value="source">source</option>
+                          <option value="subject">subject</option>
+                    </select>
+                    
+        
 
                     <input type="submit"/>
                     <a class="clearbutton" href=".">&times;</a>
@@ -111,14 +123,14 @@
 
 
 <?php
-if ((isset($_GET['base'])) && (isset($_GET['set'])) && (isset($_GET['mp']))) {
+if ((isset($_GET['base'])) && (isset($_GET['set']))) {
     $base = $_GET['base'];
     $set = $_GET['set'];
-    $mp = $_GET['mp'];
+    $mp = "oai_dc";
     $setparts = explode("|", $set);
     $setspec = $setparts[0];
     $setname = $setparts[1];
-    if (($base !== '') && ($set !== '') && ($mp !== '')) {
+    if (($base !== '') && ($set !== '')) {
         $thisfeed = $base . "?verb=ListRecords&set=" . $setspec . "&metadataPrefix=" . $mp;
     }
 }
@@ -137,14 +149,19 @@ if (isset($thisfeed)) {
                 <table id="resulttable">
                     <thead>
                         <tr>
-                            <th>Record</th><th class='required'>Required Fields Missing</th><th class='recommended'>Recommended Fields Missing</th>
+                            <th>Field Value</th><th>Count</th>
                         </tr>
                     </thead>
                     <tbody>
         <?php
-
-        function transformToTable($feedURL, $mp) {
-
+        $valuearray = array();
+        
+        
+      
+        function transformToTable($feedURL, $field) {
+           
+            global $valuearray;
+            global $base;
             // create curl resource
             $ch = curl_init();
 
@@ -160,45 +177,65 @@ if (isset($thisfeed)) {
             // close curl resource to free up system resources
             curl_close($ch);
 
-            try {
-                $pagexml = new SimpleXMLElement($pageoutput);
+           /* try {
+             $pagexml = new SimpleXMLElement($pageoutput);
+             return $pagexml;
             } catch (Exception $e) {
-                
-            }
-
-            $xml = new DOMDocument;
-            if (@$xml->load($feedURL) === false) {
-                echo "<p>Please enter a valid feed URL.</p>";
-            } else {
-                $xsl = new DOMDocument;
-                if ($mp == 'oai_dc') {
-                    $xslpath = 'xsl/check_req_fields_dc.xsl';
-                } elseif ($mp == 'MODS') {
-                    $xslpath = 'xsl/check_req_fields_mods.xsl';
-                } else {
-                    $xslpath = 'xsl/check_req_fields_dc.xsl';
                 }
-                $xsl->load($xslpath);
-                $proc = new XSLTProcessor;
-                $proc->importStylesheet($xsl);
-
-
-                $result = trim($proc->transformToXML($xml));
-
-                echo $result;
-                return $pagexml;
+            * 
+            */
+            
+            $pagexml = new SimpleXMLElement($pageoutput);
+      
+            if(isset($pagexml->ListRecords->record)){
+            foreach ($pagexml->ListRecords->record as $record) {
+                //echo $pagexml->asXML();
+                $oai_dc = $record->metadata->children('http://www.openarchives.org/OAI/2.0/oai_dc/');
+                $dc = $oai_dc->children('http://purl.org/dc/elements/1.1/');
+                $valueparts = explode(";",$dc->{$field});
+                foreach ($valueparts as $value){
+                    $value = trim($value);
+                    if($value!=''){
+                    $valuearray[$value][] = $value;
+                    }
+                }
+            }}
+            
+            if (isset($pagexml->ListRecords->resumptionToken)) {
+            $feedURL = $base . "?verb=ListRecords&resumptionToken=" . $pagexml->ListRecords->resumptionToken;
+            transformToTable($feedURL, $field);
             }
+
         }
+        
+        if(isset($_GET['field']) && $_GET['field']!='') {
 
-        transformToTable($thisfeed, $mp);
-
+        $facet = htmlspecialchars($_GET['field']);
+        transformToTable($thisfeed, $facet);
+        
 
         if (isset($pagexml->ListRecords->resumptionToken)) {
             $feedURL = $base . "?verb=ListRecords&resumptionToken=" . $pagexml->ListRecords->resumptionToken;
-            transformToTable($feedURL, $mp);
+            transformToTable($feedURL, $facet);
         }
+        
+        } else {
+            echo "<tr><td colspan='2'>No facet field provided!</td></tr>";
+        }
+        
+        $countarray = array();
+        foreach($valuearray as $key => $value){
+            $countarray[] = array('value'=>$key,'count'=>count($valuearray[$key]));
+        }
+       
+        
+        foreach ($countarray as $countval) {
+            echo "<tr><td>".$countval['value']."</td><td>".$countval['count']."</td></tr>";
+        }
+        
         ?>
 
+        
                     </tbody>
                 </table>
 
@@ -224,10 +261,11 @@ if (isset($thisfeed)) {
                 }
                 var setreplace = vars['set'].replace(/\+/g, '%20');
                 var setvalue = decodeURIComponent(setreplace);
-                var mpvalue = vars['mp'];
+                var fieldreplace = vars['field'].replace(/\+/g, '%20');
+                var fieldvalue = decodeURIComponent(fieldreplace);
                 $('#setname option[value="' + setvalue + '"]').attr("selected", "selected");
-                $('input:radio[name=mp]').filter('[value=' + mpvalue + ']').prop('checked', true);
-                $("table").tablesorter({sortList: [[1, 1], [2, 1]]});
+                $('#fieldname option[value="' + fieldvalue + '"]').attr("selected","selected");
+                $("table").tablesorter({sortList: [[1, 1], [0, 0]]});
             });
         </script>
     </body>
