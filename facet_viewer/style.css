@@ -38,6 +38,10 @@ table th.recommended {
     cursor:pointer;
 }
 
+table th {
+      cursor: pointer;
+}
+
 td p {
     margin: 0;
 }

@@ -12,7 +12,7 @@
             <a href="../">&laquo; Home</a>
         </div>
         <h1>DC Facet Viewer</h1>
-        <p>See the contents of Dublin Core fields in an OAI feed according to frequency.</p>
+        <p>See the contents of Dublin Core fields in an incoming OAI feed according to frequency.</p>
         <div class="formwrap">
             <form method="get" action="">
                 <?php if ((isset($_GET['base'])) && ($_GET['base'] !== '')) { ?>
@@ -20,12 +20,12 @@
                     <input disabled type="text" value="<?php echo $_GET['base']; ?>"/>
                     <input type="hidden" id="base" name="base" value="<?php echo $_GET['base']; ?>"/>
                     <?php
-                    
+
                     function getSets($rt) {
-                        if($rt!==''){
-                        $seturl = $_GET['base'] . "?verb=ListSets&resumptionToken=" . $rt;
+                        if ($rt !== '') {
+                            $seturl = $_GET['base'] . "?verb=ListSets&resumptionToken=" . $rt;
                         } else {
-                        $seturl = $_GET['base'] . "?verb=ListSets";
+                            $seturl = $_GET['base'] . "?verb=ListSets";
                         }
                         echo "<br/>SETURL: $seturl<br/>";
                         // create curl resource
@@ -49,47 +49,46 @@
                             $setxml = new SimpleXMLElement($output);
                             return $setxml;
                         } catch (Exception $e) {
-
+                            
                         }
                     }
-                   
+
                     $setarray = array();
-                    
+
                     function processSets($setxml) {
                         global $setarray;
                         $setcount = count($setxml->ListSets->set);
                         for ($i = 0; $i < $setcount; $i++) {
                             $setarray[] = $setxml->ListSets->set[$i]->setSpec . "|" . $setxml->ListSets->set[$i]->setName . "|" . ($i + 1);
                         }
-    
-                      
-                        if(isset($setxml->ListSets->resumptionToken)){
-                            if($setxml->ListSets->resumptionToken==''){
+
+
+                        if (isset($setxml->ListSets->resumptionToken)) {
+                            if ($setxml->ListSets->resumptionToken == '') {
                                 // do nothing
                             } else {
-                            $nextpass = getSets($setxml->ListSets->resumptionToken);
-                            processSets($nextpass);
+                                $nextpass = getSets($setxml->ListSets->resumptionToken);
+                                processSets($nextpass);
                             }
                         }
                     }
                     ?>
-                   
-                        <select id="setname" name="set">
-                            <?php
-                            
-                            $setxml = getSets('');
 
-                            processSets($setxml);
-                            
-                            sort($setarray);
-    
-                            foreach ($setarray as $setpair) {
-                                $setparts = explode("|",$setpair);
-                                echo "<option value='" . $setpair . "'>" . $setparts[0] ." &#x2014; ". $setparts[1] . "</option>";
-                            }
-                            ?>
-                        </select>
-              
+                    <select id="setname" name="set">
+                        <?php
+                        $setxml = getSets('');
+
+                        processSets($setxml);
+
+                        sort($setarray);
+
+                        foreach ($setarray as $setpair) {
+                            $setparts = explode("|", $setpair);
+                            echo "<option value='" . $setpair . "'>" . $setparts[0] . " &#x2014; " . $setparts[1] . "</option>";
+                        }
+                        ?>
+                    </select>
+
                     <select id="fieldname" name="field">
                         <option value="title">title</option>
                         <option value="coverage">coverage</option>
@@ -104,47 +103,47 @@
                         <option value="identifier">identifier</option>
                         <option value="publisher">publisher</option>
                         <option value="relation">relation</option>
-                         <option value="source">source</option>
-                          <option value="subject">subject</option>
+                        <option value="source">source</option>
+                        <option value="subject">subject</option>
                     </select>
-                    
-        
+
+
 
                     <input type="submit"/>
                     <a class="clearbutton" href=".">&times;</a>
 
 
-<?php } else { ?>
+                <?php } else { ?>
                     <input id="base" name="base" type="text" placeholder="OAI Base URL"/>
                     <input type="submit" value="Get Sets"/>
-<?php } ?>
+                <?php } ?>
 
         </div>
 
 
-<?php
-if ((isset($_GET['base'])) && (isset($_GET['set']))) {
-    $base = $_GET['base'];
-    $set = $_GET['set'];
-    $mp = "oai_dc";
-    $setparts = explode("|", $set);
-    $setspec = $setparts[0];
-    $setname = $setparts[1];
-    if (($base !== '') && ($set !== '')) {
-        $thisfeed = $base . "?verb=ListRecords&set=" . $setspec . "&metadataPrefix=" . $mp;
-    }
-}
+        <?php
+        if ((isset($_GET['base'])) && (isset($_GET['set']))) {
+            $base = $_GET['base'];
+            $set = $_GET['set'];
+            $mp = "oai_dc";
+            $setparts = explode("|", $set);
+            $setspec = $setparts[0];
+            $setname = $setparts[1];
+            if (($base !== '') && ($set !== '')) {
+                $thisfeed = $base . "?verb=ListRecords&set=" . $setspec . "&metadataPrefix=" . $mp;
+            }
+        }
 
-if (isset($thisfeed)) {
+        if (isset($thisfeed)) {
 
-    if ($thisfeed != '') {
+            if ($thisfeed != '') {
 
-        echo "<div class='feedwrap'>";
-        echo "<b>$setname</b><br/><a target='_blank' href='$thisfeed'>$thisfeed</a>";
-        echo "</div>";
+                echo "<div class='feedwrap'>";
+                echo "<b>$setname</b><br/><a target='_blank' href='$thisfeed'>$thisfeed</a>";
+                echo "</div>";
 
-        echo "<div id='result'>";
-        ?>
+                echo "<div id='result'>";
+                ?>
 
                 <table id="resulttable">
                     <thead>
@@ -153,99 +152,95 @@ if (isset($thisfeed)) {
                         </tr>
                     </thead>
                     <tbody>
-        <?php
-        $valuearray = array();
-        
-        
-      
-        function transformToTable($feedURL, $field) {
-           
-            global $valuearray;
-            global $base;
-            // create curl resource
-            $ch = curl_init();
+                        <?php
+                        $valuearray = array();
 
-            // set url
-            curl_setopt($ch, CURLOPT_URL, $feedURL);
+                        function transformToTable($feedURL, $field) {
 
-            //return the transfer as a string
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                            global $valuearray;
+                            global $base;
+                            // create curl resource
+                            $ch = curl_init();
 
-            // $output contains the output string
-            $pageoutput = curl_exec($ch);
+                            // set url
+                            curl_setopt($ch, CURLOPT_URL, $feedURL);
 
-            // close curl resource to free up system resources
-            curl_close($ch);
+                            //return the transfer as a string
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-           /* try {
-             $pagexml = new SimpleXMLElement($pageoutput);
-             return $pagexml;
-            } catch (Exception $e) {
-                }
-            * 
-            */
-            
-            $pagexml = new SimpleXMLElement($pageoutput);
-      
-            if(isset($pagexml->ListRecords->record)){
-            foreach ($pagexml->ListRecords->record as $record) {
-                //echo $pagexml->asXML();
-                $oai_dc = $record->metadata->children('http://www.openarchives.org/OAI/2.0/oai_dc/');
-                $dc = $oai_dc->children('http://purl.org/dc/elements/1.1/');
-                $valueparts = explode(";",$dc->{$field});
-                foreach ($valueparts as $value){
-                    $value = trim($value);
-                    if($value!=''){
-                    $valuearray[$value][] = $value;
-                    }
-                }
-            }}
-            
-            if (isset($pagexml->ListRecords->resumptionToken)) {
-            $feedURL = $base . "?verb=ListRecords&resumptionToken=" . $pagexml->ListRecords->resumptionToken;
-            transformToTable($feedURL, $field);
-            }
+                            // $output contains the output string
+                            $pageoutput = curl_exec($ch);
 
-        }
-        
-        if(isset($_GET['field']) && $_GET['field']!='') {
+                            // close curl resource to free up system resources
+                            curl_close($ch);
 
-        $facet = htmlspecialchars($_GET['field']);
-        transformToTable($thisfeed, $facet);
-        
+                            /* try {
+                              $pagexml = new SimpleXMLElement($pageoutput);
+                              return $pagexml;
+                              } catch (Exception $e) {
+                              }
+                             * 
+                             */
 
-        if (isset($pagexml->ListRecords->resumptionToken)) {
-            $feedURL = $base . "?verb=ListRecords&resumptionToken=" . $pagexml->ListRecords->resumptionToken;
-            transformToTable($feedURL, $facet);
-        }
-        
-        } else {
-            echo "<tr><td colspan='2'>No facet field provided!</td></tr>";
-        }
-        
-        $countarray = array();
-        foreach($valuearray as $key => $value){
-            $countarray[] = array('value'=>$key,'count'=>count($valuearray[$key]));
-        }
-       
-        
-        foreach ($countarray as $countval) {
-            echo "<tr><td>".$countval['value']."</td><td>".$countval['count']."</td></tr>";
-        }
-        
-        ?>
+                            $pagexml = new SimpleXMLElement($pageoutput);
 
-        
+                            if (isset($pagexml->ListRecords->record)) {
+                                foreach ($pagexml->ListRecords->record as $record) {
+                                    //echo $pagexml->asXML();
+                                    $oai_dc = $record->metadata->children('http://www.openarchives.org/OAI/2.0/oai_dc/');
+                                    $dc = $oai_dc->children('http://purl.org/dc/elements/1.1/');
+                                    $valueparts = explode(";", $dc->{$field});
+                                    foreach ($valueparts as $value) {
+                                        $value = trim($value);
+                                        if ($value != '') {
+                                            $valuearray[$value][] = $value;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (isset($pagexml->ListRecords->resumptionToken)) {
+                                $feedURL = $base . "?verb=ListRecords&resumptionToken=" . $pagexml->ListRecords->resumptionToken;
+                                transformToTable($feedURL, $field);
+                            }
+                        }
+
+                        if (isset($_GET['field']) && $_GET['field'] != '') {
+
+                            $facet = htmlspecialchars($_GET['field']);
+                            transformToTable($thisfeed, $facet);
+
+
+                            if (isset($pagexml->ListRecords->resumptionToken)) {
+                                $feedURL = $base . "?verb=ListRecords&resumptionToken=" . $pagexml->ListRecords->resumptionToken;
+                                transformToTable($feedURL, $facet);
+                            }
+                        } else {
+                            echo "<tr><td colspan='2'>No facet field provided!</td></tr>";
+                        }
+
+                        $countarray = array();
+                        foreach ($valuearray as $key => $value) {
+                            $countarray[] = array('value' => $key, 'count' => count($valuearray[$key]));
+                        }
+
+
+                        foreach ($countarray as $countval) {
+                            echo "<tr><td>" . $countval['value'] . "</td><td>" . $countval['count'] . "</td></tr>";
+                        }
+                        ?>
+
+
                     </tbody>
                 </table>
 
-                <?php
-                echo "</div>";
-            }
-        } else {
+        <?php
+        echo "</div>";
+    }
+} else {
 // do nothing
-        }
-        ?>
+}
+?>
 
         <script type="text/javascript">
             $(document).ready(function() {
@@ -264,7 +259,7 @@ if (isset($thisfeed)) {
                 var fieldreplace = vars['field'].replace(/\+/g, '%20');
                 var fieldvalue = decodeURIComponent(fieldreplace);
                 $('#setname option[value="' + setvalue + '"]').attr("selected", "selected");
-                $('#fieldname option[value="' + fieldvalue + '"]').attr("selected","selected");
+                $('#fieldname option[value="' + fieldvalue + '"]').attr("selected", "selected");
                 $("table").tablesorter({sortList: [[1, 1], [0, 0]]});
             });
         </script>

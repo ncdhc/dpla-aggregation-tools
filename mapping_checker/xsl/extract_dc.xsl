@@ -12,10 +12,10 @@
         <table>
             <tr>
                 <th class="required">Title</th>
-                <th class="required">Coverage</th>
+                <th class="required">Type</th>
                 <th class="required">Rights</th>
+                <th class="recommended">Coverage</th>
                 <th class="recommended">Language</th>
-                <th class="recommended">Type</th>
                 <th>Contributor</th>
                 <th>Creator</th>
                 <th>Date</th>
@@ -34,7 +34,7 @@
                     </xsl:for-each>
                 </td>
                 <td>
-                    <xsl:for-each select="//dc:coverage">
+                    <xsl:for-each select="//dc:type">
                         <div class='value'><a target="_blank" href="{$oaibase}{$recordbase}{./ancestor::oai:record/oai:header/oai:identifier}"><xsl:value-of select="."/></a></div> 
                     </xsl:for-each>
                 </td>
@@ -44,12 +44,12 @@
                     </xsl:for-each>
                 </td>
                 <td>
-                    <xsl:for-each select="//dc:language">
+                    <xsl:for-each select="//dc:coverage">
                         <div class='value'><a target="_blank" href="{$oaibase}{$recordbase}{./ancestor::oai:record/oai:header/oai:identifier}"><xsl:value-of select="."/></a></div> 
                     </xsl:for-each>
                 </td>
                 <td>
-                    <xsl:for-each select="//dc:type">
+                    <xsl:for-each select="//dc:language">
                         <div class='value'><a target="_blank" href="{$oaibase}{$recordbase}{./ancestor::oai:record/oai:header/oai:identifier}"><xsl:value-of select="."/></a></div> 
                     </xsl:for-each>
                 </td>
