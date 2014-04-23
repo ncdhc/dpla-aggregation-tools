@@ -12,8 +12,8 @@
         <table>
             <tr>
                 <th class="required">Title</th>
-                <th class="required">Type</th>
                 <th class="required">Rights</th>
+                <th class="recommended">Type</th>
                 <th class="recommended">Coverage</th>
                 <th class="recommended">Language</th>
                 <th>Contributor</th>
@@ -34,12 +34,12 @@
                     </xsl:for-each>
                 </td>
                 <td>
-                    <xsl:for-each select="//dc:type">
+                    <xsl:for-each select="//dc:rights">
                         <div class='value'><a target="_blank" href="{$oaibase}{$recordbase}{./ancestor::oai:record/oai:header/oai:identifier}"><xsl:value-of select="."/></a></div> 
                     </xsl:for-each>
                 </td>
-                <td>
-                    <xsl:for-each select="//dc:rights">
+                 <td>
+                 <xsl:for-each select="//dc:type">
                         <div class='value'><a target="_blank" href="{$oaibase}{$recordbase}{./ancestor::oai:record/oai:header/oai:identifier}"><xsl:value-of select="."/></a></div> 
                     </xsl:for-each>
                 </td>
