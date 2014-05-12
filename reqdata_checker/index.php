@@ -144,6 +144,7 @@ if (isset($thisfeed)) {
         <?php
 
         function transformToTable($feedURL, $mp) {
+            global $base;
 
             // create curl resource
             $ch = curl_init();
@@ -186,17 +187,17 @@ if (isset($thisfeed)) {
                 $result = trim($proc->transformToXML($xml));
 
                 echo $result;
-                return $pagexml;
+                //return $pagexml;
+            } 
+            
+            if (isset($pagexml->ListRecords->resumptionToken)) {
+            $nextfeedURL = $base . "?verb=ListRecords&resumptionToken=" . $pagexml->ListRecords->resumptionToken;
+            transformToTable($nextfeedURL, $mp);
             }
         }
 
         transformToTable($thisfeed, $mp);
-
-
-        if (isset($pagexml->ListRecords->resumptionToken)) {
-            $feedURL = $base . "?verb=ListRecords&resumptionToken=" . $pagexml->ListRecords->resumptionToken;
-            transformToTable($feedURL, $mp);
-        }
+ 
         ?>
 
                     </tbody>
