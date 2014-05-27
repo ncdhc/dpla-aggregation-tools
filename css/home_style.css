@@ -56,3 +56,22 @@ a:hover {
     border-radius: 4px;
     color: #999;
 }
+
+p.byline {
+    color: #999;
+    font-size: .8em;
+    line-height: 1.3em;
+    clear: both;
+}
+
+p.byline a {
+    display: inline;
+    background-color: transparent;
+    padding: none;
+    color: #999;
+    text-decoration: underline;
+}
+
+p.byline a:hover {
+    color: #000;
+}

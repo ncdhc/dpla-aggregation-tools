@@ -2,11 +2,11 @@
 <html>
     <head>
         <title>OAI Aggregation Tools &raquo; DC Mapping Checker</title>
-        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/tool_style.css"/>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     </head>
 
-    <body>
+    <body id="mappingchecker">
         <div class="sectionwrap">
             <a href="../">&laquo; Home</a>
         </div>
@@ -182,6 +182,8 @@
         }
             ?>
 
+        <p class="byline">DPLA OAI Aggregation Tools 1.0 (May 2014)<br/>
+        Developed by the <a href="http://www.digitalnc.org/about">North Carolina Digital Heritage Center</a> &middot; <a href="mailto://digitalnc@unc.edu">Contact</a></p>
         <script type="text/javascript">
             $(document).ready(function(){
                 var vars = [], hash;

@@ -1,18 +1,12 @@
-<?php
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
 <html>
     <head>
-        <title>NCDHC DPLA/OAI Aggregation Tools</title>
-        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <title>DPLA OAI Aggregation Tools</title>
+        <link rel="stylesheet" type="text/css" href="css/home_style.css"/>
     </head>
 </html>
 
 <div id="container">
-    <h1>NCDHC DPLA/OAI Aggregation Tools</h1>
+    <h1>DPLA OAI Aggregation Tools</h1>
     <ul>
         <li>
             <a href="mapping_checker"><h2>DC Mapping Checker</h2>
@@ -31,5 +25,6 @@
             <p>Quick OAI URL construction for DigitalNC feed.</p></a>
         </li>
     </ul>
+    <p class="byline">DPLA OAI Aggregation Tools 1.0 (May 2014)<br/>
+        Developed by the <a href="http://www.digitalnc.org/about">North Carolina Digital Heritage Center</a> &middot; <a href="mailto://digitalnc@unc.edu">Contact</a></p>
 </div>
-
