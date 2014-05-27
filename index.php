@@ -18,11 +18,7 @@
         </li>                                
         <li>
             <a href="reqdata_checker/"><h2>Required Data Checker</h2>
-            <p>Check incoming oai_dc or outgoing MODS for required data.</p></a>
-        </li>
-        <li>
-            <a href="oai_browser/"><h2>DigitalNC OAI URL Reference</h2>
-            <p>Quick OAI URL construction for DigitalNC feed.</p></a>
+            <p>Check incoming oai_dc for required data.</p></a>
         </li>
     </ul>
     <?php include('inc/byline.php');?>

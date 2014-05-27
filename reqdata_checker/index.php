@@ -12,7 +12,7 @@
             <a href="../">&laquo; Home</a>
         </div>
         <h1>Required Data Checker</h1>
-        <p>Check incoming oai_dc or outgoing MODS for required data.</p>
+        <p>Check incoming oai_dc for required data.</p>
         <div class="formwrap">
             <form method="get" action="">
                 <?php if ((isset($_GET['base'])) && ($_GET['base'] !== '')) { ?>
@@ -91,13 +91,6 @@
                             ?>
                         </select>
               
-
-
-                    <div class="inputblock">
-                        <input type="radio" name="mp" value="oai_dc" checked>oai_dc<br/>
-                        <input type="radio" name="mp" value="MODS">MODS
-                    </div>
-
                     <input type="submit"/>
                     <a class="clearbutton" href=".">&times;</a>
 
@@ -111,10 +104,10 @@
 
 
 <?php
-if ((isset($_GET['base'])) && (isset($_GET['set'])) && (isset($_GET['mp']))) {
+if ((isset($_GET['base'])) && (isset($_GET['set']))) {
     $base = $_GET['base'];
     $set = $_GET['set'];
-    $mp = $_GET['mp'];
+    $mp = "oai_dc";
     $setparts = explode("|", $set);
     $setspec = $setparts[0];
     $setname = $setparts[1];
