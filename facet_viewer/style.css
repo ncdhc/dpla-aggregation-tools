@@ -104,3 +104,22 @@ form input, form select {
     float: left;
     width: 100px;
 }
+
+p.byline {
+    font-size: .8em;
+    line-height: 1.3em;
+    clear: both;
+    color: #999;
+}
+
+p.byline a {
+    display: inline;
+    background-color: transparent;
+    padding: none;
+    color: #999;
+    text-decoration: underline;
+}
+
+p.byline a:hover {
+    color: #000;
+}

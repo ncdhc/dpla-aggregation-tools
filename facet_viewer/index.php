@@ -241,7 +241,7 @@
 // do nothing
 }
 ?>
-
+<?php include('../inc/byline.php');?>
         <script type="text/javascript">
             $(document).ready(function() {
                 var vars = [], hash;

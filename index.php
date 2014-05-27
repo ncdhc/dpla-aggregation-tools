@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>DPLA OAI Aggregation Tools</title>
-        <link rel="stylesheet" type="text/css" href="css/home_style.css"/>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
     </head>
 </html>
 
@@ -25,6 +25,5 @@
             <p>Quick OAI URL construction for DigitalNC feed.</p></a>
         </li>
     </ul>
-    <p class="byline">DPLA OAI Aggregation Tools 1.0 (May 2014)<br/>
-        Developed by the <a href="http://www.digitalnc.org/about">North Carolina Digital Heritage Center</a> &middot; <a href="mailto://digitalnc@unc.edu">Contact</a></p>
+    <?php include('inc/byline.php');?>
 </div>
