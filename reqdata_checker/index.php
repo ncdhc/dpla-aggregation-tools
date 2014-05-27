@@ -187,7 +187,7 @@ if (isset($thisfeed)) {
                 $result = trim($proc->transformToXML($xml));
 
                 echo $result;
-                //return $pagexml;
+                
             } 
             
             if (isset($pagexml->ListRecords->resumptionToken)) {
