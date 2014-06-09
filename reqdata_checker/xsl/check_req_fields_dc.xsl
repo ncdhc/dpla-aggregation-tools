@@ -13,10 +13,12 @@
         
         <xsl:for-each select="//oai:record">
             <xsl:variable name="title" select="normalize-space(.//dc:title[1])"/>
-            <xsl:variable name="coverage" select="normalize-space(.//dc:coverage[1])"/>
             <xsl:variable name="rights" select="normalize-space(.//dc:rights[1])"/>
+            
             <xsl:variable name="language" select="normalize-space(.//dc:language[1])"/>
             <xsl:variable name="type" select="normalize-space(.//dc:type[1])"/>
+            <xsl:variable name="coverage" select="normalize-space(.//dc:coverage[1])"/>
+            
             <xsl:variable name="id" select="./oai:header/oai:identifier"/>
            
             
@@ -26,9 +28,6 @@
                     <td>
                         <xsl:if test="not($title)">
                             <p>Title</p>
-                        </xsl:if>
-                        <xsl:if test="not($coverage)">
-                            <p>Coverage</p>
                         </xsl:if>
                         <xsl:if test="not($rights)">
                             <p>Rights</p>
@@ -40,6 +39,9 @@
                         </xsl:if>
                         <xsl:if test="not($type)">
                             <p>Type</p>
+                        </xsl:if>
+                        <xsl:if test="not($coverage)">
+                            <p>Coverage</p>
                         </xsl:if>
                     </td>
                 </tr>

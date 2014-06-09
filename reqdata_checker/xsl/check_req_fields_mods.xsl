@@ -12,13 +12,14 @@
         <xsl:variable name="recordbase"><xsl:text>?verb=GetRecord&amp;metadataPrefix=MODS&amp;identifier=</xsl:text></xsl:variable>
         
         <xsl:for-each select="//oai:record">
+            
             <xsl:variable name="title" select="normalize-space(.//mods:mods/mods:titleInfo[1]/mods:title)"/>
-            <xsl:variable name="coverage" select="normalize-space(.//mods:geographic[1])"/>
             <xsl:variable name="rights" select="normalize-space(.//mods:accessCondition[1])"/>
             <xsl:variable name="thumburl" select="normalize-space(.//mods:url[@access='preview'][1])"/>
             <xsl:variable name="refurl" select="normalize-space(.//mods:url[@usage='primary display'][1])"/>
             <xsl:variable name="owninginst" select="normalize-space(.//mods:note[@type='ownership'][1])"/>
             
+            <xsl:variable name="coverage" select="normalize-space(.//mods:geographic[1])"/>
             <xsl:variable name="language" select="normalize-space(.//mods:languageTerm[1])"/>
             <xsl:variable name="type" select="normalize-space(.//mods:genre[1])"/>
             <xsl:variable name="id" select="./oai:header/oai:identifier"/>
@@ -30,9 +31,6 @@
                     <td>
                         <xsl:if test="not($title)">
                             <p>Title</p>
-                        </xsl:if>
-                        <xsl:if test="not($coverage)">
-                            <p>Coverage</p>
                         </xsl:if>
                         <xsl:if test="not($rights)">
                             <p>Rights</p>
@@ -53,6 +51,9 @@
                         </xsl:if>
                         <xsl:if test="not($type)">
                             <p>Type</p>
+                        </xsl:if>
+                        <xsl:if test="not($coverage)">
+                            <p>Coverage</p>
                         </xsl:if>
                     </td>
                 </tr>
