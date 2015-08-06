@@ -12,6 +12,7 @@
         <xsl:variable name="recordbase"><xsl:text>?verb=GetRecord&amp;metadataPrefix=MODS&amp;identifier=</xsl:text></xsl:variable>
         
         <xsl:for-each select="//oai:record">
+            <xsl:if test="./oai:header[not(@status)]">
             
             <xsl:variable name="title" select="normalize-space(.//mods:mods/mods:titleInfo[1]/mods:title)"/>
             <xsl:variable name="rights" select="normalize-space(.//mods:accessCondition[1])"/>
@@ -58,7 +59,7 @@
                     </td>
                 </tr>
             </xsl:if>
-             
+            </xsl:if>
         </xsl:for-each>
     </xsl:template>
 </xsl:stylesheet>

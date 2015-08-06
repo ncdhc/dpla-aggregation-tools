@@ -12,6 +12,7 @@
         <xsl:variable name="recordbase"><xsl:text>?verb=GetRecord&amp;metadataPrefix=oai_dc&amp;identifier=</xsl:text></xsl:variable>
         
         <xsl:for-each select="//oai:record">
+            <xsl:if test="./oai:header[not(@status)]">
             <xsl:variable name="title" select="normalize-space(.//dc:title[1])"/>
             <xsl:variable name="rights" select="normalize-space(.//dc:rights[1])"/>
             
@@ -46,7 +47,7 @@
                     </td>
                 </tr>
             </xsl:if>
-             
+            </xsl:if>
         </xsl:for-each>
     </xsl:template>
 </xsl:stylesheet>
