@@ -186,7 +186,7 @@
 
                             if (isset($pagexml->ListRecords->record)) {
                                 foreach ($pagexml->ListRecords->record as $record) {
-                                    //echo $pagexml->asXML();
+                                    if ($record->metadata) {
                                     $oai_dc = $record->metadata->children('http://www.openarchives.org/OAI/2.0/oai_dc/');
                                     $dc = $oai_dc->children('http://purl.org/dc/elements/1.1/');
                                     $valueparts = explode(";", $dc->{$field});
@@ -195,6 +195,7 @@
                                         if ($value != '') {
                                             $valuearray[$value][] = $value;
                                         }
+                                    }
                                     }
                                 }
                             }
