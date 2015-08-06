@@ -10,6 +10,8 @@ These tools help staff evaluate incoming **Dublin Core** feeds in three ways:
 
 Support for other incoming metadata formats is planned but not provided at this time.
 
+Screenshots and doocumentation may be found on the Project Wiki: <https://github.com/ncdhc/dpla-aggregation-tools/wiki>
+
 Version
 -------
 
