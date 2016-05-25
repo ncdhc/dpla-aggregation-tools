@@ -184,17 +184,20 @@
 
                             $pagexml = new SimpleXMLElement($pageoutput);
 
+
                             if (isset($pagexml->ListRecords->record)) {
                                 foreach ($pagexml->ListRecords->record as $record) {
                                     if ($record->metadata) {
                                     $oai_dc = $record->metadata->children('http://www.openarchives.org/OAI/2.0/oai_dc/');
                                     $dc = $oai_dc->children('http://purl.org/dc/elements/1.1/');
-                                    $valueparts = explode(";", $dc->{$field});
+                                    foreach($dc->{$field} as $fieldinstance){
+                                    $valueparts = explode(";", $fieldinstance);
                                     foreach ($valueparts as $value) {
                                         $value = trim($value);
                                         if ($value != '') {
                                             $valuearray[$value][] = $value;
                                         }
+                                    }
                                     }
                                     }
                                 }
