@@ -37,6 +37,9 @@
                         //return the transfer as a string
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
+                        //tweak to follow redirects
+                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true );
+
                         // $output contains the output string
                         $output = curl_exec($ch);
 
@@ -167,6 +170,8 @@
 
                             //return the transfer as a string
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+                            curl_setopt($ch,CURLOPT_FOLLOWLOCATION, true ) ;
 
                             // $output contains the output string
                             $pageoutput = curl_exec($ch);
